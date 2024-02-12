@@ -30,13 +30,13 @@ class PostgreSQL(AppBase):
                                         port=port,
                                         database= database_name)
             print(f"Connection successful, User -->{username} ")                                
-        except: OperationalError as err:
+        except OperationalError as err:
             print_psycopg2_exception(err)
             conn = None
         return conn  
 
 
-    def query_mysql_database(self, username, password, host, port, database_name, query):
+    def query_postgresql_database(self, username, password, host, port, database_name, query):
         
         self.db_connection = self.connection(username, password, host, port, database_name) 
         if self.db_connection != None:
