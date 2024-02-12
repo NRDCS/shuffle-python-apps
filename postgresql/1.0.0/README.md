@@ -1,5 +1,5 @@
 ## Database Manager
-An app for interacting with databases (currently only supports MySQL). Support for more database will be added as per the requirement.
+An app for interacting with PostgreSQL database.
 
 ## Requirements
 - Database host address
@@ -7,8 +7,8 @@ An app for interacting with databases (currently only supports MySQL). Support f
 - Username and password
 
 ## Action
-1) __Query MySQL Database__
-- Use this action for querying MySQL database
+1) __Query PostgreSQL Database__
+- action to query PostgreSQL database
 
   __Action parameters :-__
   - __Username__ : username of database account
