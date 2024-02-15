@@ -49,7 +49,10 @@ class PostgreSQL(AppBase):
                 self.db_connection.close()
                 return (json.dumps(json_data, indent=4))  
             except Exception as err:
-                return {"Error": f"psycopg2 query ERROR: {err}"}
+                err_type, err_obj, traceback = sys.exc_info()
+                line_num = traceback.tb_lineno
+
+                return {"Error": f"psycopg2 query ERROR: {err} on line number {line_num}. psycopg2 traceback: {traceback}, type: {err_type}"}
 
 if __name__ == "__main__":
     PostgreSQL.run()
