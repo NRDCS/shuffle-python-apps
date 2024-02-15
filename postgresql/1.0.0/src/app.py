@@ -34,7 +34,7 @@ class PostgreSQL(AppBase):
             print(f"Connection successful {username}@{database_name} ")                                
         except OperationalError as err:
             conn = None
-            return {"Error": f"psycopg2 connection ERROR: {err}, pgerror: {err.pgerror}, pgcode:{err.pgcode}"}
+            return {"Error": f"psycopg2 connection ERROR: {err}"}
         if self.db_connection != None:
             cursor = self.db_connection.cursor()
             try:
@@ -45,7 +45,7 @@ class PostgreSQL(AppBase):
                 self.db_connection.close()
                 return (json.dumps(res))  
             except Exception as err:
-                return {"Error": f"psycopg2 query ERROR: {err}, pgerror: {err.pgerror}, pgcode:{err.pgcode}"}
+                return {"Error": f"psycopg2 query ERROR: {err}"}
 
 if __name__ == "__main__":
     PostgreSQL.run()
