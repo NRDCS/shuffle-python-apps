@@ -10,6 +10,14 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 from walkoff_app_sdk.app_base import AppBase
 
+# need to encode datetime data, since json dump cant handle it
+class DatetimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        try:
+            return super().default(obj)
+        except TypeError:
+            return str(obj)
+
 class PostgreSQL(AppBase):
     __version__ = "1.0.0"
     app_name = "PostgreSQL"  # this needs to match "name" in api.yaml
@@ -40,18 +48,16 @@ class PostgreSQL(AppBase):
             try:
                 cursor.execute(str(query))
                 print("Query executed successfully")
-                # res = cursor.fetchall()
                 row_headers = [x[0] for x in cursor.description]
                 json_data = []
                 for result in cursor.fetchall():
                     json_data.append(dict(zip(row_headers, result)))
                 cursor.close()
                 self.db_connection.close()
-                return (json.dumps(json_data, indent=4))  
+                return (json.dumps(json_data, indent=1, cls=DatetimeEncoder))  
             except Exception as err:
                 err_type, err_obj, traceback = sys.exc_info()
                 line_num = traceback.tb_lineno
-
                 return {"Error": f"psycopg2 query ERROR: {err} on line number {line_num}. psycopg2 traceback: {traceback}, type: {err_type}"}
 
 if __name__ == "__main__":
