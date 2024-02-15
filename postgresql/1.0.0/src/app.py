@@ -12,7 +12,7 @@ from walkoff_app_sdk.app_base import AppBase
 
 class PostgreSQL(AppBase):
     __version__ = "1.0.0"
-    app_name = "PostgreSQL"
+    app_name = "PostgreSQL"  # this needs to match "name" in api.yaml
 
     def __init__(self, redis, logger, console_logger=None):
         """
@@ -25,8 +25,9 @@ class PostgreSQL(AppBase):
 
     def query_postgresql_database(self, username, password, host, port, database_name, query):
         
+        # self.db_connection = self.connection(username, password, host, port, database_name) 
         try:
-            conn = connect(user=username, password= password,
+            self.db_connection = connect(user=username, password= password,
                             host= host,
                             port=port,
                             database= database_name)
