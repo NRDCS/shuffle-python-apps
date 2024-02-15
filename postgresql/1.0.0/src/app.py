@@ -40,10 +40,14 @@ class PostgreSQL(AppBase):
             try:
                 cursor.execute(str(query))
                 print("Query executed successfully")
-                res = cursor.fetchall()
+                # res = cursor.fetchall()
+                row_headers = [x[0] for x in cursor.description]
+                json_data = []
+                for result in cursor.fetchall():
+                    json_data.append(dict(zip(row_headers, result)))
                 cursor.close()
                 self.db_connection.close()
-                return (json.dumps(res))  
+                return (json.dumps(json_data, indent=4))  
             except Exception as err:
                 return {"Error": f"psycopg2 query ERROR: {err}"}
 
