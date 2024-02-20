@@ -51,7 +51,17 @@ actions:
         multiline: true
         example: 'SELECT * FROM user'
         schema:
-          type: string        
+          type: string
+      - name: output_format
+        description: Output as JSON or CSV
+        required: true
+        multiline: false
+        example: 'JSON'
+        options:
+          - JSON
+          - CSV
+        schema:
+          type: string
     returns:
       schema:
         type: string

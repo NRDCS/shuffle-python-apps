@@ -31,7 +31,7 @@ class PostgreSQL(AppBase):
         """
         super().__init__(redis, logger, console_logger)
 
-    def query_postgresql_database(self, username, password, host, port, database_name, query):
+    def query_postgresql_database(self, username, password, host, port, database_name, query, output_format):
         
         # self.db_connection = self.connection(username, password, host, port, database_name) 
         try:
@@ -54,7 +54,25 @@ class PostgreSQL(AppBase):
                     json_data.append(dict(zip(row_headers, result)))
                 cursor.close()
                 self.db_connection.close()
-                return (json.dumps(json_data, indent=1, cls=DatetimeEncoder))  
+                if output_format == "JSON":
+                    return (json.dumps(json_data, indent=1, cls=DatetimeEncoder))
+                else:
+                    csv_keys=json_data[0].keys()
+                    csv_data=[]
+                    csv_data.append(",".join(csv_keys))
+                    for row in json_data:
+                        line=[]
+                        for k in csv_keys:
+                            value=row.get(k)
+                            if value == None:
+                                value='-'
+                            if "," in str(value):
+                                value=f'"{str(value)}"'
+                            line.append(str(value))
+                        csv_line=",".join(line)
+                        csv_data.append(csv_line)
+
+                    return(csv_data)
             except Exception as err:
                 err_type, err_obj, traceback = sys.exc_info()
                 line_num = traceback.tb_lineno
