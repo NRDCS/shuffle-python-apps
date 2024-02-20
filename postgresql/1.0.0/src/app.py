@@ -48,6 +48,10 @@ class PostgreSQL(AppBase):
             try:
                 cursor.execute(str(query))
                 print("Query executed successfully")
+                if cursor.description == None:
+                    cursor.close()
+                    self.db_connection.close()
+                    return(cursor.statusmessage)
                 row_headers = [x[0] for x in cursor.description]
                 json_data = []
                 for result in cursor.fetchall():
