@@ -49,9 +49,11 @@ class PostgreSQL(AppBase):
                 cursor.execute(str(query))
                 print("Query executed successfully")
                 if cursor.description == None:
+                    statusmessage=f"Status: {cursor.statusmessage}. Rows updated: {cursor.rowcount}"
+                    self.db_connection.commit()
                     cursor.close()
                     self.db_connection.close()
-                    return(cursor.statusmessage)
+                    return(statusmessage)
                 row_headers = [x[0] for x in cursor.description]
                 json_data = []
                 for result in cursor.fetchall():
