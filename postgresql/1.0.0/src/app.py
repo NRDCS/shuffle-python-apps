@@ -57,12 +57,12 @@ class PostgreSQL(AppBase):
                 if output_format == "JSON":
                     return (json.dumps(json_data, indent=1, cls=DatetimeEncoder))
                 else:
-                    csv_keys=json_data[0].keys()
+                    # csv_keys=json_data[0].keys()
                     csv_data=[]
-                    csv_data.append(",".join(csv_keys))
+                    csv_data.append(",".join(row_headers))
                     for row in json_data:
                         line=[]
-                        for k in csv_keys:
+                        for k in row_headers:
                             value=row.get(k)
                             if value == None:
                                 value='-'
